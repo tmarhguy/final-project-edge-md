@@ -107,14 +107,23 @@ Further we’ll need a logic analyzer to debug the audio as we did in one of the
 For the final demo, we will present a complete end to end demonstration of the device across several realistic use cases. This will include a single sentence translation to showcase basic functionality and latency, as well as a multi turn conversation to demonstrate the system’s ability to handle continuous interaction between a doctor and patient. In addition, we will present a failure scenario in which the system encounters a low confidence or incorrect translation, followed by a demonstration of how it detects the issue and initiates a recovery or retry process.
 
 
+Audio lead handles microphone and speaker integration, software lead connects translation pipeline, team tests end to end functionality
+
 ### 9. Sprint Planning
 
-| Milestone  | Functionality Achieved | Distribution of Work |
-| ---------- | ---------------------- | -------------------- |
-| Sprint #1  |                        |                      |
-| Sprint #2  |                        |                      |
-| MVP Demo   |                        |                      |
-| Final Demo |                        |                      |
+| Milestone  | Functionality Achieved                                 | Distribution of Work                                 |
+| ---------- | ------------------------------------------------------ | -----------------------------------------------------|
+| Sprint #1  |  Set up development environment, assign roles,         | Software lead focuses on model setup and testing, 
+                gather hardware components, and implement a           | hardware lead gathers and verifies components,                                                                       basic translation pipeline using a pretrained model   | team collaborates on initial pipeline integration
+                (Whisper or Hugging Face)                             |
+                                                                      |
+                                                                      |
+| Sprint #2  |  Implement and test audio input and output by          | Audio lead handles micropjone and speaker intregration, 
+              integrating microphone and speaker with Raspberry Pi;   | software lead conects translation pipeline, team tests
+              connect audio  pipeline to translation system for spoken|  end to end functionality
+              input to translated output                              |
+| MVP Demo   |                                                        |                                                      |
+| Final Demo |                                                        |                                                      |
 
 **This is the end of the Project Proposal section. The remaining sections will be filled out based on the milestone schedule.**
 
