@@ -1,17 +1,23 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/-Acvnhrq)
 # Final Project
 
-**Team Number:**
+**Team Number:** 
+
+6
 
 **Team Name:**
 
+EDGE MD
+
 | Team Member Name | Email Address       |
 |------------------|---------------------|
-| [Name 1]         | [Email 1]           |
-| [Name 2]         | [Email 2]           |
-| [Name 3]         | [Email 3]           |
+| Justin Monchais  | monchais@seas.upenn.edu |
+| Damodar Pai      | damodarp@wharton.upenn.edu |
+| Tyrone Marhguy   | tmarhguy@seas.upenn.edu    |
 
-**GitHub Repository URL:**
+**GitHub Repository URL:** 
+
+https://github.com/upenn-embedded/final-project-edge-md/
 
 **GitHub Pages Website URL:** [for final submission]*
 
