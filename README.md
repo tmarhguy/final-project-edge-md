@@ -3,11 +3,11 @@
 
 **Team Number:** 
 
-6
+**6**
 
 **Team Name:**
 
-EDGE MD
+**EDGE MD**
 
 | Team Member Name | Email Address       |
 |------------------|---------------------|
