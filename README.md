@@ -1,35 +1,49 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/-Acvnhrq)
-# Final Project
 
-**Team Number:** 
+# EdgeMD — Final Project
 
-**6**
+> **Team 6 · University of Pennsylvania**
 
-**Team Name:**
+| Team Member | Email |
+|-------------|-------|
+| Justin Monchais | monchais@seas.upenn.edu |
+| Damodar Pai | damodarp@wharton.upenn.edu |
+| Tyrone Marhguy | tmarhguy@seas.upenn.edu |
 
-**EDGE MD**
+**GitHub Repository:** https://github.com/upenn-embedded/final-project-edge-md/
 
-| Team Member Name | Email Address       |
-|------------------|---------------------|
-| Justin Monchais  | monchais@seas.upenn.edu |
-| Damodar Pai      | damodarp@wharton.upenn.edu |
-| Tyrone Marhguy   | tmarhguy@seas.upenn.edu    |
+**GitHub Pages:** *(link to be added for final submission)*
 
-**GitHub Repository URL:** 
+---
 
-https://github.com/upenn-embedded/final-project-edge-md/
+## Table of Contents
 
-**GitHub Pages Website URL:** [for final submission]*
+1. [Abstract](#1-abstract)
+2. [Motivation](#2-motivation)
+3. [System Block Diagram](#3-system-block-diagram)
+4. [Design Sketches](#4-design-sketches)
+5. [Software Requirements Specification (SRS)](#5-software-requirements-specification-srs)
+6. [Hardware Requirements Specification (HRS)](#6-hardware-requirements-specification-hrs)
+7. [Bill of Materials (BOM)](#7-bill-of-materials-bom)
+8. [Final Demo Goals](#8-final-demo-goals)
+9. [Sprint Planning](#9-sprint-planning)
+- [Sprint Review #1](#sprint-review-1)
+- [Sprint Review #2](#sprint-review-2)
+- [MVP Demo](#mvp-demo)
+- [Final Report](#final-report)
 
-## Final Project Proposal
+---
+
+## Project Proposal
 
 ### 1. Abstract
 
-We want to build a translator between English and Spanish that is trained on the cloud and provides inference on the edge for doctors providing services to patients. Our end product should be a box that is able to be taken to any location and then takes in audio input, dissects through noise and outputs a clear translation in the corresponding language.  
+EdgeMD is a portable English–Spanish medical translator that trains on the cloud and runs inference on the edge. The device accepts spoken audio input, filters background noise, and outputs a clear translation through a speaker — enabling real-time bilingual communication between doctors and patients without requiring network connectivity at the point of care.
 
 ### 2. Motivation
 
-The motivation of our project is that several people in the US and in 3rd world countries require a translator to act as an intermediary between doctors and patients. Not only is this dangerous from a HIPAA standpoint but it drastically minimizes the number of patients who can help because of the limitation of doctors who know a patient’s language or a translator who knows both the doctor’s and patient’s language. We hope that with a highly accurate translator that’s arguably cheap and easy to carry around, we can help doctors work with more patients at either clinics in the US or in 3rd world countries where NGOs can send more doctors to help with translation programs. 
+Many patients in the US and in underserved communities abroad require a translator to communicate with their doctor. Relying on a human intermediary raises HIPAA concerns and limits the number of patients a doctor can serve. A compact, low-cost translation device eliminates that bottleneck — allowing NGOs, clinics, and field physicians to extend care to more patients regardless of language barriers.
+
 ### 3. System Block Diagram
 
 ![Block Diagram](media/blockDiagram.png)
@@ -38,145 +52,183 @@ The motivation of our project is that several people in the US and in 3rd world 
 
 ![Design Sketch](media/firstSketch.png)
 
+---
+
 ### 5. Software Requirements Specification (SRS)
 
-The software system will focus on enabling accurate and efficient English to Spanish translation using a combination of a pretrained speech recognition and translation model along with domain specific correction tools. The pipeline will consist of speech to text processing, translation, and post processing to ensure medical accuracy. A pretrained model such as Whisper or a Hugging Face translation model will be used for fast inference on the edge device, while a medical dictionary and supporting language rules will be applied to refine outputs and correct potential errors in terminology and phrasing.
-System Requirement 1: The system must convert spoken English or Spanish input into text with at least 90 percent accuracy under low noise conditions, measured by comparing transcriptions to ground truth samples.
+The software pipeline covers three stages: speech-to-text, translation, and post-processing. A pretrained model (Whisper or a Hugging Face translation model) runs on the edge device for fast inference, while a medical dictionary enforces terminology accuracy.
 
-System Requirement 2: The system must translate input text between English and Spanish with at least 85 percent semantic accuracy, evaluated using a predefined set of medical phrases and sentences.
+**5.1 Definitions & Abbreviations**
 
-System Requirement 3: The system must apply a medical dictionary to correct key terminology, ensuring that critical medical terms are translated correctly in at least 95 percent of test cases.
+| Term | Definition |
+|------|------------|
+| STT | Speech-to-Text |
+| TTS | Text-to-Speech |
+| SRS | Software Requirements Specification |
+| NLP | Natural Language Processing |
 
-System Requirement 4: The system must produce translated audio output within 15 seconds of input completion, measured as end to end latency from speech input to audio playback.
+**5.2 Functional Requirements**
 
-System Requirement 5: The system must handle basic conversational exchanges by maintaining context across at least two consecutive sentences without significant loss of meaning.
+| ID | Description |
+|----|-------------|
+| `SRS-01` | Convert spoken English or Spanish input into text with **≥ 90% accuracy** under low-noise conditions, measured against ground-truth transcriptions. |
+| `SRS-02` | Translate text between English and Spanish with **≥ 85% semantic accuracy** on a predefined set of medical phrases and sentences. |
+| `SRS-03` | Apply a medical dictionary so critical medical terms are translated correctly in **≥ 95% of test cases**. |
+| `SRS-04` | Produce translated audio output **within 15 seconds** of input completion, measured end-to-end from speech input to playback. |
+| `SRS-05` | Support basic conversational exchanges by preserving meaning across **at least two consecutive sentences**. |
+| `SRS-06` | Detect low-confidence or failed translations and trigger an error state or retry in **≥ 90% of such cases**. |
 
-System Requirement 6: The system must detect low confidence or failed translations and trigger an error state or retry mechanism in at least 90 percent of such cases.
-
-**5.1 Definitions, Abbreviations**
-
-N/A
-
-**5.2 Functionality**
-
-| ID     | Description |
-| ------ | ----------- |
-| SRS-01 | Convert spoken English or Spanish input into text with at least 90% accuracy under low-noise conditions, measured against ground-truth transcriptions. |
-| SRS-02 | Translate text between English and Spanish with at least 85% semantic accuracy on a predefined set of medical phrases and sentences. |
-| SRS-03 | Apply a medical dictionary so critical medical terms are translated correctly in at least 95% of test cases. |
-| SRS-04 | Produce translated audio output within 15 seconds of input completion, measured end-to-end from speech input to playback. |
-| SRS-05 | Support basic conversational exchanges by preserving meaning across at least two consecutive sentences. |
-| SRS-06 | Detect low-confidence or failed translations and trigger an error state or retry in at least 90% of such cases. |
+---
 
 ### 6. Hardware Requirements Specification (HRS)
 
-The hardware system must provide clear feedback on the device’s state and support a full audio input to output pipeline. Upon a button press, the device should begin recording audio input through the microphone, convert the analog signal to digital using an ADC, process the data through the translation model, and then output the translated result by converting the signal back to analog through a speaker.
+On a button press, the device begins recording through the MEMS microphone, digitizes the signal via I2S, routes it through the translation pipeline, and plays back the translated result through an I2S amplifier and speaker. LEDs provide continuous visual feedback on system state.
 
-System Requirement 1: The device must use LEDs to indicate system states, including power status, active listening, processing, and error conditions such as failed or low confidence translations.
-System Requirement 2: The audio input system must reliably capture clear speech in environments with minimal background noise.
-System Requirement 3: The system must support real time or near real time processing, ensuring that input speech is translated and played back with minimal delay.
+**6.1 Definitions & Abbreviations**
 
+| Term | Definition |
+|------|------------|
+| I2S | Inter-IC Sound (serial audio bus) |
+| ADC | Analog-to-Digital Converter |
+| DAC | Digital-to-Analog Converter |
+| GPIO | General-Purpose Input/Output |
+| HRS | Hardware Requirements Specification |
 
-**6.1 Definitions, Abbreviations**
+**6.2 Functional Requirements**
 
-N/A
+| ID | Description |
+|----|-------------|
+| `HRS-01` | LEDs shall indicate system state: power on, active listening, processing, and error conditions (e.g., failed or low-confidence translations). |
+| `HRS-02` | The audio input path shall capture intelligible speech in environments with minimal background noise, suitable for clinical-style use. |
+| `HRS-03` | The system shall support real-time or near-real-time operation so speech is translated and played back with minimal perceptible delay. |
+| `HRS-04` | Tactile push buttons shall provide user control (e.g., initiating recording and switching modes) via GPIO to the STM32. |
+| `HRS-05` | The audio output path shall drive a speaker through the processed translation (I2S amplifier + 4Ω speaker) for intelligible playback. |
 
-**6.2 Functionality**
-
-| ID     | Description |
-| ------ | ----------- |
-| HRS-01 | LEDs shall indicate system state, including power, active listening, processing, and error conditions (e.g., failed or low-confidence translations). |
-| HRS-02 | The audio input path shall capture clear speech in environments with minimal background noise (microphone and conditioning suitable for clinical-style use). |
-| HRS-03 | The system shall support real-time or near-real-time operation so speech is translated and played back with minimal delay. |
-| HRS-04 | Tactile push buttons shall provide user control aligned with the pipeline (e.g., initiating recording and other modes) via GPIO to the STM32. |
-| HRS-05 | The audio output path shall drive a speaker from the processed translation (e.g., I2S amplifier and speaker) for intelligible playback. |
+---
 
 ### 7. Bill of Materials (BOM)
 
-Raspberry Pi 5, 8GB RAM
-Official RPi 5 27W USB-C power supply
-MicroSD card, 128GB, A2 rated (Samsung EVO Plus or similar)
-STM32F446RE Nucleo-64 development board 
-INMP441 I2S MEMS microphone breakout board 
-MAX98357A I2S Class-D amplifier breakout board
-3W 4Ω speaker, 40mm driver
-5 resistors, 220Ω (for LEDs)
-4 resistors, 10kΩ (pull-ups for buttons)
-4 LEDs of different colors 
-4 tactile push buttons (12mm, through-hole for breadboard) 
-Further we’ll need a logic analyzer to debug the audio as we did in one of the previous worksheets. 
+| Component | Description | Qty |
+|-----------|-------------|-----|
+| Raspberry Pi 5 (8 GB) | Edge inference host | 1 |
+| RPi 5 27W USB-C Power Supply | Official power supply | 1 |
+| MicroSD Card, 128 GB (A2) | Storage (Samsung EVO Plus or equivalent) | 1 |
+| STM32F446RE Nucleo-64 | Microcontroller development board | 1 |
+| INMP441 I2S MEMS Microphone | Audio input breakout | 1 |
+| MAX98357A I2S Class-D Amplifier | Audio output breakout | 1 |
+| Speaker, 3W 4Ω (40 mm) | Audio output driver | 1 |
+| Resistor, 220 Ω | Current limiting for LEDs | 5 |
+| Resistor, 10 kΩ | Pull-ups for push buttons | 4 |
+| LEDs (assorted colors) | System state indicators | 4 |
+| Tactile Push Buttons (12 mm, through-hole) | User input | 4 |
+| Logic Analyzer | I2S / GPIO debug tool | 1 |
 
+---
 
 ### 8. Final Demo Goals
 
-For the final demo, we will present a complete end to end demonstration of the device across several realistic use cases. This will include a single sentence translation to showcase basic functionality and latency, as well as a multi turn conversation to demonstrate the system’s ability to handle continuous interaction between a doctor and patient. In addition, we will present a failure scenario in which the system encounters a low confidence or incorrect translation, followed by a demonstration of how it detects the issue and initiates a recovery or retry process.
+The demo will cover three scenarios:
 
+1. **Single-sentence translation** — validates basic functionality and end-to-end latency.
+2. **Multi-turn conversation** — demonstrates continuous English↔Spanish interaction between a simulated doctor and patient.
+3. **Failure & recovery** — injects a low-confidence translation to show that the error-detection and retry mechanism functions correctly.
+
+---
 
 ### 9. Sprint Planning
 
-The project is divided into four weekly sprints leading up to the April 24 deadline.
+**Deadline:** April 24
 
 | Milestone | Functionality Achieved | Distribution of Work |
-| --------- | ---------------------- | -------------------- |
-| Sprint #1 | Set up the development environment; assign roles; gather hardware components; implement a basic translation pipeline using a pretrained model (e.g., Whisper or a Hugging Face English-to-Spanish model). | Software lead focuses on model setup and testing; hardware lead gathers and verifies components; team collaborates on initial pipeline integration. |
-| Sprint #2 | Implement and test audio input and output by integrating the microphone and speaker with the Raspberry Pi; connect the translation pipeline so spoken input produces translated output. | Audio lead handles microphone and speaker integration; software lead connects the translation pipeline; team tests end-to-end functionality. |
-| MVP Demo | Integrate the full hardware system (STM32, LEDs, buttons); improve reliability by handling noise, refining translations with the dictionary, and ensuring stable real-time performance. | Team works across hardware (STM32, LEDs, buttons), software (noise, dictionary, real-time behavior), and integration testing. |
-| Final Demo | Debug and polish the system; prepare demo scenarios; finalize documentation; demonstrate simple translations, continuous conversation, and recovery from failed translations. | One member on translation model and software; one on audio processing and integration; one on hardware and system control; regular check-ins so all components work together. |
+|-----------|------------------------|----------------------|
+| **Sprint 1** | Set up the development environment; assign roles; gather hardware; implement a basic translation pipeline using a pretrained model (Whisper or Hugging Face). | Software lead: model setup and testing. Hardware lead: component sourcing and verification. Full team: initial pipeline integration. |
+| **Sprint 2** | Integrate microphone and speaker with the Raspberry Pi; connect the translation pipeline so spoken input produces translated audio output. | Audio lead: microphone and speaker integration. Software lead: pipeline connection. Full team: end-to-end testing. |
+| **MVP Demo** | Integrate the full hardware system (STM32, LEDs, buttons); improve reliability with noise handling, medical dictionary, and stable real-time performance. | Full team across hardware (STM32, LEDs, buttons), software (noise filtering, dictionary, real-time tuning), and integration testing. |
+| **Final Demo** | Debug and polish the system; prepare demo scenarios; finalize documentation; demonstrate simple translation, continuous conversation, and failure recovery. | One member: translation model and software. One member: audio processing and integration. One member: hardware and system control. Regular syncs to ensure all components work together. |
 
-**This is the end of the Project Proposal section. The remaining sections will be filled out based on the milestone schedule.**
+---
+
+> **The sections below will be completed according to the milestone schedule.**
+
+---
 
 ## Sprint Review #1
 
-### Last week's progress
+### Last Week's Progress
 
-### Current state of project
+*(To be filled in)*
 
-### Next week's plan
+### Current State of Project
+
+*(To be filled in)*
+
+### Next Week's Plan
+
+*(To be filled in)*
+
+---
 
 ## Sprint Review #2
 
-### Last week's progress
+### Last Week's Progress
 
-### Current state of project
+*(To be filled in)*
 
-### Next week's plan
+### Current State of Project
+
+*(To be filled in)*
+
+### Next Week's Plan
+
+*(To be filled in)*
+
+---
 
 ## MVP Demo
 
-## Final Report
+*(To be filled in)*
 
-Don't forget to make the GitHub pages public website!
-If you’ve never made a GitHub pages website before, you can follow this webpage (though, substitute your final project repository for the GitHub username one in the quickstart guide):  [https://docs.github.com/en/pages/quickstart](https://docs.github.com/en/pages/quickstart)
+---
+
+## Final Report
 
 ### 1. Video
 
+*(To be added)*
+
 ### 2. Images
+
+*(To be added)*
 
 ### 3. Results
 
-#### 3.1 Software Requirements Specification (SRS) Results
+#### 3.1 SRS Validation
 
-| ID     | Description | Validation Outcome |
-| ------ | ----------- | ------------------ |
-| SRS-01 | Convert spoken English or Spanish input into text with at least 90% accuracy under low-noise conditions, measured against ground-truth transcriptions. | TBD — document method, test set, and results in the `validation` folder (e.g., logs, screenshots). |
-| SRS-02 | Translate text between English and Spanish with at least 85% semantic accuracy on a predefined set of medical phrases and sentences. | TBD — document evaluation protocol and outcomes in the `validation` folder. |
-| SRS-03 | Apply a medical dictionary so critical medical terms are translated correctly in at least 95% of test cases. | TBD — document dictionary tests and results in the `validation` folder. |
-| SRS-04 | Produce translated audio output within 15 seconds of input completion, measured end-to-end from speech input to playback. | TBD — document timing measurements in the `validation` folder. |
-| SRS-05 | Support basic conversational exchanges by preserving meaning across at least two consecutive sentences. | TBD — document scenario tests in the `validation` folder. |
-| SRS-06 | Detect low-confidence or failed translations and trigger an error state or retry in at least 90% of such cases. | TBD — document failure-injection tests in the `validation` folder. |
+| ID | Description | Validation Outcome |
+|----|-------------|--------------------|
+| `SRS-01` | STT accuracy ≥ 90% under low-noise conditions. | TBD — transcription logs vs. ground truth in `validation/`. |
+| `SRS-02` | Translation semantic accuracy ≥ 85% on medical phrase set. | TBD — evaluation protocol and results in `validation/`. |
+| `SRS-03` | Medical dictionary correctness ≥ 95% on critical terms. | TBD — dictionary test results in `validation/`. |
+| `SRS-04` | End-to-end latency ≤ 15 seconds from speech input to playback. | TBD — timing measurements in `validation/`. |
+| `SRS-05` | Context preserved across ≥ 2 consecutive sentences. | TBD — scenario test results in `validation/`. |
+| `SRS-06` | Error/retry triggered in ≥ 90% of low-confidence cases. | TBD — failure-injection test logs in `validation/`. |
 
-#### 3.2 Hardware Requirements Specification (HRS) Results
+#### 3.2 HRS Validation
 
-| ID     | Description | Validation Outcome |
-| ------ | ----------- | ------------------ |
-| HRS-01 | LEDs shall indicate system state, including power, active listening, processing, and error conditions (e.g., failed or low-confidence translations). | TBD — photo or video of each indicated state in the `validation` folder. |
-| HRS-02 | The audio input path shall capture clear speech in environments with minimal background noise (microphone and conditioning suitable for clinical-style use). | TBD — audio samples or analyzer captures in the `validation` folder. |
-| HRS-03 | The system shall support real-time or near-real-time operation so speech is translated and played back with minimal delay. | TBD — latency notes or logs in the `validation` folder. |
-| HRS-04 | Tactile push buttons shall provide user control aligned with the pipeline (e.g., initiating recording and other modes) via GPIO to the STM32. | TBD — demo or scope/GPIO trace in the `validation` folder. |
-| HRS-05 | The audio output path shall drive a speaker from the processed translation (e.g., I2S amplifier and speaker) for intelligible playback. | TBD — playback demo or measurements in the `validation` folder. |
+| ID | Description | Validation Outcome |
+|----|-------------|--------------------|
+| `HRS-01` | LEDs indicate all four system states correctly. | TBD — photo or video of each state in `validation/`. |
+| `HRS-02` | Microphone captures intelligible speech under minimal noise. | TBD — audio samples or analyzer captures in `validation/`. |
+| `HRS-03` | Real-time or near-real-time operation with minimal delay. | TBD — latency notes or logs in `validation/`. |
+| `HRS-04` | Push buttons control pipeline via GPIO on the STM32. | TBD — demo or GPIO scope trace in `validation/`. |
+| `HRS-05` | Speaker produces intelligible translated audio via I2S amplifier. | TBD — playback demo or measurements in `validation/`. |
 
 ### 4. Conclusion
 
+*(To be filled in)*
+
+---
 
 ## References
 
+*(To be added)*

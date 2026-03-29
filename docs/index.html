@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EdgeMD — Edge-based English–Spanish medical translator. Final project by Team 6, University of Pennsylvania." />
+  <title>EdgeMD | Medical Translation at the Edge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ── Navigation ───────────────────────────────────────── -->
+  <nav aria-label="Site navigation">
+    <div class="nav-inner">
+      <span class="nav-logo">Edge<span>MD</span></span>
+      <ul class="nav-links">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#system">System</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#bom">BOM</a></li>
+        <li><a href="#sprints">Sprints</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <span class="hero-eyebrow">University of Pennsylvania · Team 6</span>
+      <h1>Edge<span>MD</span></h1>
+      <p class="hero-sub">
+        A portable English–Spanish medical translator that trains on the cloud
+        and runs inference on the edge — enabling real-time bilingual communication
+        between doctors and patients, anywhere.
+      </p>
+      <div class="hero-meta">
+        <span class="badge"><span class="badge-dot"></span> In Progress</span>
+        <span><strong>Deadline:</strong> April 24, 2025</span>
+        <span><strong>Repo:</strong> <a href="https://github.com/upenn-embedded/final-project-edge-md/" style="color:var(--accent)">upenn-embedded/final-project-edge-md</a></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Team / Overview ──────────────────────────────────── -->
+  <section id="overview">
+    <div class="container">
+      <span class="section-label">About</span>
+      <h2>Project Overview</h2>
+      <div class="section-divider"></div>
+
+      <p>
+        Many patients in the US and in underserved communities abroad rely on a
+        human interpreter to communicate with their doctor. Relying on an
+        intermediary raises HIPAA concerns and limits how many patients a physician
+        can serve. EdgeMD removes that bottleneck — a compact, low-cost device that
+        any NGO, clinic, or field physician can carry and use without network
+        connectivity at the point of care.
+      </p>
+
+      <h3>Team</h3>
+      <div class="team-grid">
+        <div class="team-card">
+          <span class="name">Justin Monchais</span>
+          <span class="email">monchais@seas.upenn.edu</span>
+        </div>
+        <div class="team-card">
+          <span class="name">Damodar Pai</span>
+          <span class="email">damodarp@wharton.upenn.edu</span>
+        </div>
+        <div class="team-card">
+          <span class="name">Tyrone Marhguy</span>
+          <span class="email">tmarhguy@seas.upenn.edu</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── System ───────────────────────────────────────────── -->
+  <section id="system">
+    <div class="container">
+      <span class="section-label">Architecture</span>
+      <h2>System Design</h2>
+      <div class="section-divider"></div>
+
+      <p>
+        On a button press the device records audio through an I2S MEMS microphone,
+        runs it through a pretrained speech-to-text and translation model on the
+        Raspberry Pi 5, then plays back the translated result through an I2S
+        amplifier and speaker. The STM32 handles GPIO — buttons and LED state
+        indicators — and communicates with the Pi over UART.
+      </p>
+
+      <div class="img-block">
+        <img src="assets/blockDiagram.png" alt="EdgeMD system block diagram" />
+        <p class="img-caption">Figure 1 — System block diagram</p>
+      </div>
+
+      <div class="img-block" style="margin-top:2rem;">
+        <img src="assets/firstSketch.png" alt="EdgeMD design sketch" />
+        <p class="img-caption">Figure 2 — Initial design sketch</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Requirements ─────────────────────────────────────── -->
+  <section id="requirements">
+    <div class="container">
+      <span class="section-label">Specifications</span>
+      <h2>Requirements</h2>
+      <div class="section-divider"></div>
+
+      <!-- SRS -->
+      <h3>Software Requirements (SRS)</h3>
+      <p>
+        The pipeline covers three stages: speech-to-text, translation, and
+        post-processing. A pretrained model (Whisper or Hugging Face) runs on
+        the edge device; a medical dictionary enforces terminology accuracy.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Requirement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>SRS-01</code></td>
+              <td>Convert spoken English or Spanish to text with <strong>≥ 90% accuracy</strong> under low-noise conditions, measured against ground-truth transcriptions.</td>
+            </tr>
+            <tr>
+              <td><code>SRS-02</code></td>
+              <td>Translate between English and Spanish with <strong>≥ 85% semantic accuracy</strong> on a predefined set of medical phrases.</td>
+            </tr>
+            <tr>
+              <td><code>SRS-03</code></td>
+              <td>Apply a medical dictionary so critical terms are translated correctly in <strong>≥ 95% of test cases</strong>.</td>
+            </tr>
+            <tr>
+              <td><code>SRS-04</code></td>
+              <td>Produce translated audio output <strong>within 15 seconds</strong> of input completion, measured end-to-end.</td>
+            </tr>
+            <tr>
+              <td><code>SRS-05</code></td>
+              <td>Preserve conversational meaning across <strong>at least two consecutive sentences</strong>.</td>
+            </tr>
+            <tr>
+              <td><code>SRS-06</code></td>
+              <td>Detect low-confidence or failed translations and trigger an error/retry in <strong>≥ 90% of such cases</strong>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- HRS -->
+      <h3 style="margin-top:2.5rem;">Hardware Requirements (HRS)</h3>
+      <p>
+        The hardware provides a full audio I/O pipeline with tactile controls
+        and clear visual state feedback via LEDs.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Requirement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>HRS-01</code></td>
+              <td>LEDs shall indicate system state: power on, active listening, processing, and error/low-confidence.</td>
+            </tr>
+            <tr>
+              <td><code>HRS-02</code></td>
+              <td>The audio input path shall capture intelligible speech in minimal-noise environments suitable for clinical use.</td>
+            </tr>
+            <tr>
+              <td><code>HRS-03</code></td>
+              <td>The system shall operate in real-time or near-real-time — speech to translated playback with minimal perceptible delay.</td>
+            </tr>
+            <tr>
+              <td><code>HRS-04</code></td>
+              <td>Tactile push buttons shall control the pipeline (record, mode switch) via GPIO to the STM32.</td>
+            </tr>
+            <tr>
+              <td><code>HRS-05</code></td>
+              <td>The audio output path shall drive a 4 Ω speaker through the I2S Class-D amplifier for intelligible playback.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOM ──────────────────────────────────────────────── -->
+  <section id="bom">
+    <div class="container">
+      <span class="section-label">Hardware</span>
+      <h2>Bill of Materials</h2>
+      <div class="section-divider"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Description</th>
+              <th>Qty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Raspberry Pi 5 (8 GB)</td>
+              <td>Edge inference host</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>RPi 5 27W USB-C Power Supply</td>
+              <td>Official power supply</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>MicroSD Card, 128 GB (A2)</td>
+              <td>Storage — Samsung EVO Plus or equivalent</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>STM32F446RE Nucleo-64</td>
+              <td>Microcontroller development board</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>INMP441 I2S MEMS Microphone</td>
+              <td>Audio input breakout</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>MAX98357A I2S Class-D Amplifier</td>
+              <td>Audio output breakout</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Speaker, 3 W 4 Ω (40 mm)</td>
+              <td>Audio output driver</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Resistor, 220 Ω</td>
+              <td>Current limiting for LEDs</td>
+              <td>5</td>
+            </tr>
+            <tr>
+              <td>Resistor, 10 kΩ</td>
+              <td>Pull-ups for push buttons</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>LEDs (assorted colors)</td>
+              <td>System state indicators</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Tactile Push Buttons (12 mm, through-hole)</td>
+              <td>User input controls</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Logic Analyzer</td>
+              <td>I2S / GPIO debug tool</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Sprints ───────────────────────────────────────────── -->
+  <section id="sprints">
+    <div class="container">
+      <span class="section-label">Timeline</span>
+      <h2>Sprint Planning</h2>
+      <div class="section-divider"></div>
+
+      <div class="callout">
+        Deadline: <strong>April 24, 2025</strong> — four weekly sprints from initial setup to final demo.
+      </div>
+
+      <div class="sprint-grid">
+        <div class="sprint-card">
+          <span class="sprint-label">Sprint 1</span>
+          <h4>Foundation</h4>
+          <p>Dev environment, role assignment, component sourcing, basic translation pipeline using Whisper or Hugging Face.</p>
+          <br/><span class="tag tag-pending">Pending</span>
+        </div>
+        <div class="sprint-card">
+          <span class="sprint-label">Sprint 2</span>
+          <h4>Audio I/O</h4>
+          <p>Integrate microphone and speaker with the Raspberry Pi; connect pipeline so spoken input produces translated audio output.</p>
+          <br/><span class="tag tag-pending">Pending</span>
+        </div>
+        <div class="sprint-card">
+          <span class="sprint-label">MVP Demo</span>
+          <h4>Full Integration</h4>
+          <p>Add STM32, LEDs, buttons; improve reliability with noise handling, medical dictionary, and stable real-time performance.</p>
+          <br/><span class="tag tag-pending">Pending</span>
+        </div>
+        <div class="sprint-card">
+          <span class="sprint-label">Final Demo</span>
+          <h4>Polish & Demo</h4>
+          <p>Debug, prepare demo scenarios, finalize docs. Show single translation, multi-turn conversation, and failure recovery.</p>
+          <br/><span class="tag tag-pending">Pending</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────── -->
+  <footer>
+    <p>EdgeMD &mdash; Team 6 &middot; University of Pennsylvania &middot; Spring 2025</p>
+    <p style="margin-top:0.4rem;">
+      <a href="https://github.com/upenn-embedded/final-project-edge-md/">GitHub Repository</a>
+    </p>
+  </footer>
+
+</body>
+</html>
